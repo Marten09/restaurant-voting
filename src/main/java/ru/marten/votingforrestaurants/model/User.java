@@ -1,7 +1,8 @@
 package ru.marten.votingforrestaurants.model;
 
-import java.util.Date;
-import java.util.Set;
+import org.springframework.util.CollectionUtils;
+
+import java.util.*;
 
 public class User extends AbstractNamedEntity {
     private String email;
@@ -10,13 +11,21 @@ public class User extends AbstractNamedEntity {
     private Date registered = new Date();
     private Set<Role> roles;
 
-    public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Set<Role> roles) {
+    public User(User u) {
+        this(u.id, u.name, u.email, u.password, u.enabled, u.registered, u.roles);
+    }
+
+    public User(Integer id, String name, String email, String password, Role... roles) {
+        this(id, name, email, password, true, new Date(), List.of(roles));
+    }
+
+    public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.enabled = enabled;
         this.registered = registered;
-        this.roles = roles;
+        setRoles(roles);
     }
 
     public String getEmail() {
@@ -55,7 +64,7 @@ public class User extends AbstractNamedEntity {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRoles(Collection<Role> roles) {
+        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
 }
