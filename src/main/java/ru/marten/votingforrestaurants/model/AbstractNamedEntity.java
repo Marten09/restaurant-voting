@@ -1,5 +1,8 @@
 package ru.marten.votingforrestaurants.model;
 
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public abstract class AbstractNamedEntity extends AbstractBaseEntity {
 
     protected String name;
@@ -7,6 +10,9 @@ public abstract class AbstractNamedEntity extends AbstractBaseEntity {
     public AbstractNamedEntity(Integer id, String name) {
         super(id);
         this.name = name;
+    }
+
+    protected AbstractNamedEntity() {
     }
 
     public String getName() {

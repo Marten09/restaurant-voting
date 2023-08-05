@@ -2,6 +2,7 @@ package ru.marten.votingforrestaurants.service;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.marten.votingforrestaurants.model.User;
 import ru.marten.votingforrestaurants.repository.UserRepository;
@@ -11,6 +12,7 @@ import java.util.List;
 import static ru.marten.votingforrestaurants.util.ValidationUtil.checkNotFound;
 import static ru.marten.votingforrestaurants.util.ValidationUtil.checkNotFoundWithId;
 
+@Service
 public class UserService {
     private final UserRepository repository;
 
@@ -26,11 +28,11 @@ public class UserService {
 
     @CacheEvict(value = "users", allEntries = true)
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(repository.delete(id) != 0 , id);
     }
 
     public User get(int id) {
-        return checkNotFoundWithId(repository.get(id), id);
+        return checkNotFoundWithId(repository.findById(id).orElse(null), id);
     }
 
     public User getByEmail(String email) {
@@ -40,7 +42,7 @@ public class UserService {
 
     @Cacheable("users")
     public List<User> getAll() {
-        return repository.getAll();
+        return repository.findAll();
     }
 
     @CacheEvict(value = "users", allEntries = true)

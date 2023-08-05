@@ -1,5 +1,6 @@
 package ru.marten.votingforrestaurants.service;
 
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.marten.votingforrestaurants.model.Dish;
 import ru.marten.votingforrestaurants.repository.DishRepository;
@@ -8,32 +9,33 @@ import java.util.List;
 
 import static ru.marten.votingforrestaurants.util.ValidationUtil.checkNotFoundWithId;
 
+@Service
 public class DishService {
-    private final DishRepository repository;
+    private final DishRepository dishRepository;
 
     public DishService(DishRepository repository) {
-        this.repository = repository;
+        this.dishRepository = repository;
     }
 
-    public Dish create(Dish dish, int userId) {
+    public Dish create(Dish dish) {
         Assert.notNull(dish, "dish must not be null");
-        return repository.save(dish, userId);
+        return dishRepository.save(dish);
     }
 
-    public Dish update(Dish dish, int userId) {
+    public void update(Dish dish) {
         Assert.notNull(dish, "dish must not be null");
-        return repository.save(dish, userId);
+        checkNotFoundWithId(dishRepository.save(dish), dish.id());
     }
 
-    public void delete(int id, int userId) {
-        checkNotFoundWithId(repository.delete(id, userId), id);
+    public void delete(int id) {
+        checkNotFoundWithId(dishRepository.delete(id) != 0, id);
     }
 
-    public Dish get(int id, int userId) {
-        return checkNotFoundWithId(repository.get(id, userId), id);
+    public Dish get(int id) {
+        return checkNotFoundWithId(dishRepository.findById(id).orElse(null), id);
     }
 
-    public List<Dish> getAll(int userId) {
-        return repository.getAll(userId);
+    public List<Dish> getAll() {
+        return dishRepository.findAll();
     }
 }
