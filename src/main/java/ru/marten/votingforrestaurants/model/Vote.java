@@ -2,7 +2,7 @@ package ru.marten.votingforrestaurants.model;
 
 import java.time.LocalDate;
 
-public class Vote extends AbstractBaseEntity {
+public class Vote extends BaseEntity {
     private LocalDate voteDate;
 
     private User user;

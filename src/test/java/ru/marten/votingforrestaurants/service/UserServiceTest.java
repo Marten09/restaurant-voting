@@ -3,14 +3,14 @@ package ru.marten.votingforrestaurants.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import ru.marten.votingforrestaurants.error.NotFoundException;
 import ru.marten.votingforrestaurants.model.Role;
 import ru.marten.votingforrestaurants.model.User;
-import ru.marten.votingforrestaurants.util.exception.NotFoundException;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static ru.marten.votingforrestaurants.testData.UserTestData.*;
+import static ru.marten.votingforrestaurants.web.user.UserTestData.*;
 
 class UserServiceTest extends AbstractServiceTest {
     @Autowired

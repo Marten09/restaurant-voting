@@ -1,18 +1,26 @@
 package ru.marten.votingforrestaurants.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "dish")
-public class Dish extends AbstractBaseEntity {
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Dish extends BaseEntity {
     @Column(name = "description", nullable = false)
     @NotBlank
     @Size(min = 2, max = 120)
@@ -26,53 +34,29 @@ public class Dish extends AbstractBaseEntity {
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @NotNull
+    @JsonBackReference
+//    @NotNull
     private Restaurant restaurant;
 
-    public Dish() {
-    }
-
     public Dish(Dish dish) {
-        this(dish.id, dish.description, dish.price, dish.registered, dish.restaurant);
+        this(dish.id, dish.description, dish.price, dish.registered);
     }
 
-    public Dish(Integer id, String description, int price, LocalDate registered, Restaurant restaurant) {
+    public Dish(Integer id, String description, int price, LocalDate registered) {
         super(id);
         this.description = description;
         this.price = price;
         this.registered = registered;
-        this.restaurant = restaurant;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public LocalDate getRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(LocalDate registered) {
-        this.registered = registered;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "description='" + description + '\'' +
+                ", price=" + price +
+                ", registered=" + registered +
+                ", restaurant=" + restaurant +
+                ", id=" + id +
+                '}';
     }
 }

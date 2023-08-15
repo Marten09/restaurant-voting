@@ -1,55 +1,70 @@
 package ru.marten.votingforrestaurants.model;
 
-import org.hibernate.annotations.BatchSize;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.util.CollectionUtils;
+import ru.marten.votingforrestaurants.HasIdAndEmail;
+import ru.marten.votingforrestaurants.util.validation.NoHtml;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
 @Table(name = "users")
-public class User extends AbstractNamedEntity {
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class User extends NamedEntity implements HasIdAndEmail {
+
     @Column(name = "email", nullable = false, unique = true)
     @Email
     @NotBlank
     @Size(max = 128)
+    @NoHtml   // https://stackoverflow.com/questions/17480809
     private String email;
+
     @Column(name = "password", nullable = false)
     @NotBlank
-    @Size(min = 5, max = 128)
+    @Size(max = 128)
+    // https://stackoverflow.com/a/12505165/548473
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled = true;
+
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
     @NotNull
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date registered = new Date();
+
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
-            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "uk_user_role")})
+    @CollectionTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role"}, name = "uk_user_role"))
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
-    //    @Fetch(FetchMode.SUBSELECT)
-    @BatchSize(size = 200)
     @JoinColumn
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Role> roles;
-
-    public User() {
-
-    }
 
     public User(User u) {
         this(u.id, u.name, u.email, u.password, u.enabled, u.registered, u.roles);
     }
 
     public User(Integer id, String name, String email, String password, Role... roles) {
-        this(id, name, email, password, true, new Date(), List.of(roles));
+        this(id, name, email, password, true, new Date(), Arrays.asList(roles));
     }
 
     public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {
@@ -61,43 +76,16 @@ public class User extends AbstractNamedEntity {
         setRoles(roles);
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Date getRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(Date registered) {
-        this.registered = registered;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
     public void setRoles(Collection<Role> roles) {
         this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
+    }
+
+    public boolean hasRole(Role role) {
+        return roles != null && roles.contains(role);
+    }
+
+    @Override
+    public String toString() {
+        return "User:" + id + '[' + email + ']';
     }
 }

@@ -9,8 +9,8 @@ import ru.marten.votingforrestaurants.repository.UserRepository;
 
 import java.util.List;
 
-import static ru.marten.votingforrestaurants.util.ValidationUtil.checkNotFound;
-import static ru.marten.votingforrestaurants.util.ValidationUtil.checkNotFoundWithId;
+import static ru.marten.votingforrestaurants.util.validation.ValidationUtil.checkNotFound;
+import static ru.marten.votingforrestaurants.util.validation.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class UserService {
@@ -37,7 +37,7 @@ public class UserService {
 
     public User getByEmail(String email) {
         Assert.notNull(email, "email must not be null");
-        return checkNotFound(repository.getByEmail(email), "email=" + email);
+        return checkNotFound(repository.getExistedByEmail(email), "email=" + email);
     }
 
     @Cacheable("users")

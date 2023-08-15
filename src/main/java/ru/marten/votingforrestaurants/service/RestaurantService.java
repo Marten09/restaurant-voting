@@ -1,10 +1,10 @@
 package ru.marten.votingforrestaurants.service;
 
+import org.springframework.stereotype.Service;
 import ru.marten.votingforrestaurants.model.Restaurant;
 import ru.marten.votingforrestaurants.repository.RestaurantRepository;
 
-import static ru.marten.votingforrestaurants.util.ValidationUtil.checkNotFoundWithId;
-
+@Service
 public class RestaurantService {
     private final RestaurantRepository repository;
 
@@ -13,6 +13,10 @@ public class RestaurantService {
     }
 
     public Restaurant get(int id) {
-        return checkNotFoundWithId(repository.get(id), id);
+        return repository.findById(id).orElse(null);
+    }
+
+    public Restaurant getWithMenu(int id) {
+        return repository.getWithMenu(id);
     }
 }

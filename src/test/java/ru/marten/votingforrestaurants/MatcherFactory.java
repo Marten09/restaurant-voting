@@ -3,7 +3,7 @@ package ru.marten.votingforrestaurants;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
-import ru.marten.votingforrestaurants.web.json.JsonUtil;
+import ru.marten.votingforrestaurants.util.JsonUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -11,7 +11,14 @@ import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Factory for creating test matchers.
+ * <p>
+ * Comparing actual and expected objects via AssertJ
+ * Support converting json MvcResult to objects for comparation.
+ */
 public class MatcherFactory {
+
     public static <T> Matcher<T> usingAssertions(Class<T> clazz, BiConsumer<T, T> assertion, BiConsumer<Iterable<T>, Iterable<T>> iterableAssertion) {
         return new Matcher<>(clazz, assertion, iterableAssertion);
     }
