@@ -10,7 +10,7 @@ import ru.marten.votingforrestaurants.model.User;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static ru.marten.votingforrestaurants.web.user.UserTestData.*;
+import static ru.marten.votingforrestaurants.testData.UserTestData.*;
 
 class UserServiceTest extends AbstractServiceTest {
     @Autowired

@@ -1,4 +1,4 @@
-package ru.marten.votingforrestaurants.web.user;
+package ru.marten.votingforrestaurants.testData;
 
 import ru.marten.votingforrestaurants.MatcherFactory;
 import ru.marten.votingforrestaurants.model.Role;
