@@ -12,11 +12,11 @@ public class DishTestData {
     public static final int NOT_FOUND = 100;
     public static final int DISH1_ID = 1;
 
-    public static final Dish dish1 = new Dish(DISH1_ID, "Пюре", 500, LocalDate.now());
-    public static final Dish dish2 = new Dish(DISH1_ID + 1, "Шашлык", 1000, LocalDate.now());
-    public static final Dish dish3 = new Dish(DISH1_ID + 2, "Блины", 400, LocalDate.now());
-    public static final Dish dish4 = new Dish(DISH1_ID + 3, "Пельмени", 250, LocalDate.now());
-    public static final Dish dish5 = new Dish(DISH1_ID + 4, "Лосось в кляре", 900, LocalDate.now());
+    public static final Dish dish1 = new Dish(DISH1_ID, "Пюре", 500, LocalDate.now().plusDays(1));
+    public static final Dish dish2 = new Dish(DISH1_ID + 1, "Шашлык", 1000, LocalDate.now().plusDays(1));
+    public static final Dish dish3 = new Dish(DISH1_ID + 2, "Блины", 400, LocalDate.now().plusDays(1));
+    public static final Dish dish4 = new Dish(DISH1_ID + 3, "Пельмени", 250, LocalDate.now().plusDays(1));
+    public static final Dish dish5 = new Dish(DISH1_ID + 4, "Лосось в кляре", 900, LocalDate.now().plusDays(1));
     public static final Dish dish6 = new Dish(DISH1_ID + 5, "Запеканка", 150, LocalDate.now());
     public static final Dish dish7 = new Dish(DISH1_ID + 6, "Форель", 810, LocalDate.now());
     public static final Dish dish8 = new Dish(DISH1_ID + 7, "Овощи на гриле", 410, LocalDate.now());
@@ -44,7 +44,7 @@ public class DishTestData {
     }
 
     public static List<Dish> getAllByRestaurant1() {
-        return List.of(dish1, dish2, dish3, dish4, dish5, dish6, dish7, dish8, dish9, dish10);
+        return List.of(dish1, dish2, dish3, dish4, dish5, dish6, dish7, dish8, dish9);
     }
 
     public static Dish getUpdated() {

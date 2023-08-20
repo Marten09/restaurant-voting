@@ -57,6 +57,6 @@ public class DishServiceTest extends AbstractServiceTest {
     @Test
     void getAll() {
         List<Dish> all = service.getAll(RESTAURANT1_ID);
-        DISH_MATCHER.assertMatch(all, dish1, dish2, dish3, dish4, dish5, dish6, dish7, dish8, dish9, dish10);
+        DISH_MATCHER.assertMatch(all, dish1, dish2, dish3, dish4, dish5, dish6, dish7, dish8, dish9);
     }
 }

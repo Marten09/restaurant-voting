@@ -9,11 +9,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static ru.marten.votingforrestaurants.testData.DishTestData.*;
 
 public class RestaurantTestData {
-    public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "menuList");
+    public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingEqualsComparator(Restaurant.class);
     public static MatcherFactory.Matcher<Restaurant> RESTAURANT_WITH_MENU_MATCHER =
             MatcherFactory.usingAssertions(Restaurant.class,
 //     No need use ignoringAllOverriddenEquals, see https://assertj.github.io/doc/#breaking-changes
-                    (a, e) -> assertThat(a).usingRecursiveComparison().ignoringFields(   "menuList.restaurant").isEqualTo(e),
+                    (a, e) -> assertThat(a).usingRecursiveComparison().ignoringFields("menuList.restaurant").isEqualTo(e),
                     (a, e) -> {
                         throw new UnsupportedOperationException();
                     });
@@ -26,6 +26,10 @@ public class RestaurantTestData {
 
     static {
         restaurant1.setMenuList(List.of(dish1, dish2, dish3, dish4, dish5, dish6, dish7, dish8, dish9, dish10));
+    }
+
+    public static List<Restaurant> getAll() {
+        return List.of(restaurant1, restaurant2, restaurant3);
     }
 
     public static Restaurant getNew() {
