@@ -6,14 +6,14 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.marten.votingforrestaurants.error.NotFoundException;
 import ru.marten.votingforrestaurants.model.Dish;
-import ru.marten.votingforrestaurants.repository.DishRepository;
 import ru.marten.votingforrestaurants.service.DishService;
 import ru.marten.votingforrestaurants.testData.DishTestData;
 import ru.marten.votingforrestaurants.util.JsonUtil;
 import ru.marten.votingforrestaurants.web.AbstractControllerTest;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,8 +26,6 @@ class DishRestControllerTest extends AbstractControllerTest {
     private static final String REST_URL_SLASH = DishRestController.REST_URL + '/';
     @Autowired
     private DishService dishService;
-    @Autowired
-    private DishRepository dishRepository;
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
@@ -61,8 +59,7 @@ class DishRestControllerTest extends AbstractControllerTest {
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + RESTAURANT1_ID + "/dishes/" + DISH1_ID))
                 .andExpect(status().isNoContent());
-//        assertThrows(NotFoundException.class, () -> dishService.get(RESTAURANT1_ID, DISH1_ID));
-        assertFalse(dishRepository.get(RESTAURANT1_ID, DISH1_ID).isPresent());
+        assertThrows(NotFoundException.class, () -> dishService.get(RESTAURANT1_ID, DISH1_ID));
     }
 
 
