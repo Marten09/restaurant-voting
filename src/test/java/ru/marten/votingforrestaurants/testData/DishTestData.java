@@ -2,12 +2,17 @@ package ru.marten.votingforrestaurants.testData;
 
 import ru.marten.votingforrestaurants.MatcherFactory;
 import ru.marten.votingforrestaurants.model.Dish;
+import ru.marten.votingforrestaurants.to.DishTo;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import static ru.marten.votingforrestaurants.testData.RestaurantTestData.restaurant1;
+import static ru.marten.votingforrestaurants.testData.RestaurantTestData.restaurant2;
+
 public class DishTestData {
-    public static final MatcherFactory.Matcher<Dish> DISH_MATCHER = MatcherFactory.usingEqualsComparator(Dish.class);
+    public static final MatcherFactory.Matcher<Dish> DISH_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Dish.class, "restaurant", "registered");
+    public static final MatcherFactory.Matcher<DishTo> DISH_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(DishTo.class);
 
     public static final int NOT_FOUND = 100;
     public static final int DISH1_ID = 1;
@@ -35,7 +40,9 @@ public class DishTestData {
     public static final Dish dish21 = new Dish(DISH1_ID + 20, "Хинкали", 250, LocalDate.now());
 
     public static Dish getNew() {
-        return new Dish(null, "Новая еда", 100, LocalDate.now());
+        Dish newDish = new Dish(null, "Новая еда", 100, LocalDate.now());
+        newDish.setRestaurant(restaurant2);
+        return newDish;
     }
 
     public static List<Dish> getAll() {
@@ -51,6 +58,7 @@ public class DishTestData {
         Dish updated = new Dish(dish1);
         updated.setDescription("Updated");
         updated.setPrice(900);
+        updated.setRestaurant(restaurant1);
         return updated;
     }
 }

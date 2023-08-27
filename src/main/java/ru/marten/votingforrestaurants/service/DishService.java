@@ -5,7 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.marten.votingforrestaurants.model.Dish;
 import ru.marten.votingforrestaurants.repository.DishRepository;
-import ru.marten.votingforrestaurants.repository.RestaurantRepository;
+import ru.marten.votingforrestaurants.to.DishTo;
+import ru.marten.votingforrestaurants.util.DishUtil;
 
 import java.util.List;
 
@@ -15,41 +16,36 @@ import static ru.marten.votingforrestaurants.util.validation.ValidationUtil.chec
 @Transactional(readOnly = true)
 public class DishService {
     private final DishRepository dishRepository;
-    private final RestaurantRepository restaurantRepository;
 
-    public DishService(DishRepository repository, RestaurantRepository restaurantRepository) {
+    public DishService(DishRepository repository) {
         this.dishRepository = repository;
-        this.restaurantRepository = restaurantRepository;
     }
 
     @Transactional
-    public Dish create(Dish dish, int restId) {
+    public DishTo create(Dish dish) {
         Assert.notNull(dish, "dish must not be null");
-        if (!dish.isNew() && get(dish.id(), restId) == null) {
+        if (!dish.isNew()) {
             return null;
         }
-        dish.setRestaurant(restaurantRepository.getReferenceById(restId));
-        return dishRepository.save(dish);
+        Dish newDish = dishRepository.save(dish);
+        return DishUtil.createTo(newDish);
     }
 
-    public void update(Dish dish, int restId) {
+    public void update(Dish dish) {
         Assert.notNull(dish, "dish must not be null");
-        dish.setRestaurant(restaurantRepository.getReferenceById(restId));
         checkNotFoundWithId(dishRepository.save(dish), dish.id());
     }
 
     @Transactional
-    public void delete(int id, int restId) {
-        checkNotFoundWithId(dishRepository.delete(id, restId) != 0, id);
+    public void delete(int restId, int id) {
+        checkNotFoundWithId(dishRepository.delete(restId, id) != 0, id);
     }
 
-    public Dish get(int id, int restId) {
-        return checkNotFoundWithId(dishRepository.findById(id)
-                .filter(dish -> dish.getRestaurant().getId() == restId)
-                .orElse(null), id);
+    public Dish get(int restId, int id) {
+        return checkNotFoundWithId(dishRepository.get(restId, id).orElse(null), id);
     }
 
-    public List<Dish> getAll(int restId) {
-        return dishRepository.getAll(restId);
+    public List<Dish> getAllByRestaurant(int restId) {
+        return checkNotFoundWithId(dishRepository.getAllByRestaurant(restId), restId);
     }
 }
