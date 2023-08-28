@@ -10,6 +10,8 @@ import ru.marten.votingforrestaurants.error.NotFoundException;
 import ru.marten.votingforrestaurants.model.Dish;
 import ru.marten.votingforrestaurants.service.DishService;
 import ru.marten.votingforrestaurants.testData.DishTestData;
+import ru.marten.votingforrestaurants.to.DishTo;
+import ru.marten.votingforrestaurants.util.DishUtil;
 import ru.marten.votingforrestaurants.util.JsonUtil;
 import ru.marten.votingforrestaurants.web.AbstractControllerTest;
 
@@ -30,10 +32,12 @@ class DishRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
-        Dish newDish = getNew();
+//        Dish newDish = getNew();
+        DishTo newDishTo = new DishTo(null, "новая еда", 233, RESTAURANT1_ID);
+        Dish newDish = DishUtil.createNewFromTo(newDishTo);
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL_SLASH + RESTAURANT1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newDish)))
+                .content(JsonUtil.writeValue(newDishTo)))
                 .andExpect(status().isCreated());
 
         Dish created = DISH_MATCHER.readFromJson(action);
@@ -46,12 +50,13 @@ class DishRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void update() throws Exception {
-        Dish updated = getUpdated();
+        Dish oldDish = dishService.get(RESTAURANT1_ID, DISH1_ID);
+        DishTo updated = new DishTo(null, "updateDish", 300, RESTAURANT1_ID);
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + RESTAURANT1_ID + "/dishes/" + DISH1_ID).contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
-        DISH_MATCHER.assertMatch(dishService.get(RESTAURANT1_ID, DISH1_ID), updated);
+        DISH_MATCHER.assertMatch(oldDish, DishUtil.updateFromTo(new Dish(dish1), updated));
     }
 
     @Test

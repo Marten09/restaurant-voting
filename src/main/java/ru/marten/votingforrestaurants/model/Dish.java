@@ -1,6 +1,6 @@
 package ru.marten.votingforrestaurants.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +13,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
@@ -20,7 +21,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Dish extends BaseEntity {
+public class Dish extends BaseEntity implements Serializable {
     @Column(name = "description", nullable = false)
     @NotBlank
     @Size(min = 2, max = 120)
@@ -30,11 +31,12 @@ public class Dish extends BaseEntity {
     private int price;
     @Column(name = "registered", nullable = false)
     @NotNull
+    @JsonIgnore
     private LocalDate registered;
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonBackReference
+    @JsonIgnore
 //    @NotNull
     private Restaurant restaurant;
 

@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.marten.votingforrestaurants.error.NotFoundException;
 import ru.marten.votingforrestaurants.model.Dish;
-import ru.marten.votingforrestaurants.to.DishTo;
-import ru.marten.votingforrestaurants.util.DishUtil;
 
 import java.util.List;
 
@@ -19,11 +17,11 @@ public class DishServiceTest extends AbstractServiceTest {
 
     @Test
     void create() {
-        DishTo created = service.create(getNew());
+        Dish created = service.create(getNew());
         int newId = created.id();
-        DishTo newDish = DishUtil.createTo(getNew());
+        Dish newDish = getNew();
         newDish.setId(newId);
-        DISH_TO_MATCHER.assertMatch(created, newDish);
+        DISH_MATCHER.assertMatch(created, newDish);
     }
 
     @Test

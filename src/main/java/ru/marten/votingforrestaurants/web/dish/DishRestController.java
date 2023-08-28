@@ -11,6 +11,7 @@ import ru.marten.votingforrestaurants.model.Dish;
 import ru.marten.votingforrestaurants.model.Restaurant;
 import ru.marten.votingforrestaurants.service.RestaurantService;
 import ru.marten.votingforrestaurants.to.DishTo;
+import ru.marten.votingforrestaurants.util.DishUtil;
 
 import java.net.URI;
 import java.util.List;
@@ -19,13 +20,14 @@ import java.util.List;
 @RequestMapping(value = DishRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class DishRestController extends AbstractDishController {
-    static final String REST_URL = "/api/admin/dishes";
+    static final String REST_URL = "/api/admin/restaurants";
     private final RestaurantService restaurantService;
 
-    @PostMapping(value = "{restId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DishTo> createWithLocation(@Valid @RequestBody Dish dish, @PathVariable int restId) {
-        dish.setRestaurant(restaurantService.get(restId));
-        DishTo created = super.create(dish);
+    @PostMapping(value = "/{restId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody DishTo dishTo, @PathVariable int restId) {
+        Dish dish = DishUtil.createNewFromTo(dishTo);
+        dish.setRestaurant(restaurantService.getWithMenu(restId));
+        Dish created = super.create(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{restId}")
                 .buildAndExpand(created.getId()).toUri();
@@ -34,8 +36,9 @@ public class DishRestController extends AbstractDishController {
 
     @PutMapping(value = "/{restId}/dishes/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Dish dish, @PathVariable int restId, @PathVariable int id) {
-        Restaurant restaurant = restaurantService.get(restId);
+    public void update(@Valid @RequestBody DishTo dishTo, @PathVariable int restId, @PathVariable int id) {
+        Dish dish = DishUtil.createNewFromTo(dishTo);
+        Restaurant restaurant = restaurantService.getWithMenu(restId);
         dish.setRestaurant(restaurant);
         super.update(dish, id);
     }

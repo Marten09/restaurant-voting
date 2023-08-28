@@ -13,6 +13,7 @@ import java.util.Optional;
 @Repository
 @Transactional(readOnly = true)
 public interface DishRepository extends BaseRepository<Dish> {
+    @Transactional
     @Modifying
     @Query("DELETE FROM Dish d WHERE d.id=:id AND d.restaurant.id=:restId")
     int delete(@Param("restId") int restId, @Param("id") int id);

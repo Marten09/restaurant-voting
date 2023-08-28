@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.marten.votingforrestaurants.model.Dish;
 import ru.marten.votingforrestaurants.service.DishService;
-import ru.marten.votingforrestaurants.to.DishTo;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public abstract class AbstractDishController {
     @Autowired
     private DishService service;
 
-    public DishTo create(Dish dish) {
+    public Dish create(Dish dish) {
         log.info("create {} for restaurant {}", dish, dish.getRestaurant().id());
         checkNew(dish);
         return service.create(dish);

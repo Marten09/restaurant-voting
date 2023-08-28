@@ -12,7 +12,6 @@ import static ru.marten.votingforrestaurants.testData.RestaurantTestData.restaur
 
 public class DishTestData {
     public static final MatcherFactory.Matcher<Dish> DISH_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Dish.class, "restaurant", "registered");
-    public static final MatcherFactory.Matcher<DishTo> DISH_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(DishTo.class);
 
     public static final int NOT_FOUND = 100;
     public static final int DISH1_ID = 1;
@@ -27,7 +26,7 @@ public class DishTestData {
     public static final Dish dish8 = new Dish(DISH1_ID + 7, "Овощи на гриле", 410, LocalDate.now());
     public static final Dish dish9 = new Dish(DISH1_ID + 8, "Шаурма", 280, LocalDate.now());
     public static final Dish dish10 = new Dish(DISH1_ID + 9, "Пюре", 150, LocalDate.now());
-    public static final Dish dish11= new Dish(DISH1_ID + 10, "Шашлык", 1000, LocalDate.now());
+    public static final Dish dish11 = new Dish(DISH1_ID + 10, "Шашлык", 1000, LocalDate.now());
     public static final Dish dish12 = new Dish(DISH1_ID + 11, "Блины", 230, LocalDate.now());
     public static final Dish dish13 = new Dish(DISH1_ID + 12, "Пельмени", 250, LocalDate.now());
     public static final Dish dish14 = new Dish(DISH1_ID + 13, "Лосось в кляре", 900, LocalDate.now());
@@ -35,7 +34,7 @@ public class DishTestData {
     public static final Dish dish16 = new Dish(DISH1_ID + 15, "Форель", 810, LocalDate.now());
     public static final Dish dish17 = new Dish(DISH1_ID + 16, "Овощи на гриле", 410, LocalDate.now());
     public static final Dish dish18 = new Dish(DISH1_ID + 17, "Шаурма с овощами", 220, LocalDate.now());
-    public static final Dish dish19= new Dish(DISH1_ID + 18, "Шашлык с овощами", 1000, LocalDate.now());
+    public static final Dish dish19 = new Dish(DISH1_ID + 18, "Шашлык с овощами", 1000, LocalDate.now());
     public static final Dish dish20 = new Dish(DISH1_ID + 19, "Блины с мясом", 400, LocalDate.now());
     public static final Dish dish21 = new Dish(DISH1_ID + 20, "Хинкали", 250, LocalDate.now());
 
@@ -58,6 +57,7 @@ public class DishTestData {
         Dish updated = new Dish(dish1);
         updated.setDescription("Updated");
         updated.setPrice(900);
+        updated.setRegistered(LocalDate.now());
         updated.setRestaurant(restaurant1);
         return updated;
     }
