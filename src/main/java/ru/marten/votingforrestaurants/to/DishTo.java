@@ -8,7 +8,9 @@ import lombok.Value;
 @EqualsAndHashCode(callSuper = true)
 public class DishTo extends BaseTo {
     String description;
+
     int price;
+
     @NotNull
     Integer restaurantId;
 
