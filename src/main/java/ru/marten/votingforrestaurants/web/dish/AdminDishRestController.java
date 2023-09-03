@@ -17,9 +17,9 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = DishRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminDishRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
-public class DishRestController extends AbstractDishController {
+public class AdminDishRestController extends AbstractDishController {
     static final String REST_URL = "/api/admin/restaurants";
     private final RestaurantService restaurantService;
 

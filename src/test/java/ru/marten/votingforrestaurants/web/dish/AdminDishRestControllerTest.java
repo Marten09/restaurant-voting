@@ -22,17 +22,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.marten.votingforrestaurants.testData.DishTestData.*;
 import static ru.marten.votingforrestaurants.testData.RestaurantTestData.RESTAURANT1_ID;
 import static ru.marten.votingforrestaurants.testData.UserTestData.ADMIN_MAIL;
-import static ru.marten.votingforrestaurants.web.dish.DishRestController.REST_URL;
+import static ru.marten.votingforrestaurants.web.dish.AdminDishRestController.REST_URL;
 
-class DishRestControllerTest extends AbstractControllerTest {
-    private static final String REST_URL_SLASH = DishRestController.REST_URL + '/';
+class AdminDishRestControllerTest extends AbstractControllerTest {
+    private static final String REST_URL_SLASH = AdminDishRestController.REST_URL + '/';
     @Autowired
     private DishService dishService;
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
-//        Dish newDish = getNew();
         DishTo newDishTo = new DishTo(null, "новая еда", 233, RESTAURANT1_ID);
         Dish newDish = DishUtil.createNewFromTo(newDishTo);
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL_SLASH + RESTAURANT1_ID)

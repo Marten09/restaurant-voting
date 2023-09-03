@@ -57,7 +57,7 @@ class UserServiceTest extends AbstractServiceTest {
     @Test
     void getAll() {
         List<User> all = service.getAll();
-        USER_MATCHER.assertMatch(all, user, admin, guest);
+        USER_MATCHER.assertMatch(all, user, admin, guest, newUser);
     }
 
     @Test
