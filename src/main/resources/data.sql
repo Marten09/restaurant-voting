@@ -10,9 +10,9 @@ VALUES ('USER', 1),
        ('ADMIN', 2),
        ('USER', 4);
 
-INSERT INTO RESTAURANTS(name)
+INSERT INTO RESTAURANT(name)
 VALUES ('Лисичка'),
-       ('Тетерев'),
+       ('Нияма'),
        ('Онегин Дача');
 
 INSERT INTO DISH (description, price, registered, restaurant_id)

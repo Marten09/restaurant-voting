@@ -17,7 +17,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "dish")
+@Table(name = "dish", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"description", "registered", "restaurant_id"}, name = "dish_unique_menu_day_idx")
+})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
