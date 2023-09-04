@@ -1,6 +1,5 @@
 package ru.marten.votingforrestaurants.to;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
@@ -11,13 +10,10 @@ public class DishTo extends BaseTo {
 
     int price;
 
-    @NotNull
-    Integer restaurantId;
 
-    public DishTo(Integer id, String description, int price, Integer restaurantId) {
+    public DishTo(Integer id, String description, int price) {
         super(id);
         this.description = description;
         this.price = price;
-        this.restaurantId = restaurantId;
     }
 }

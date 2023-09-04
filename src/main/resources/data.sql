@@ -39,5 +39,5 @@ VALUES ('Пюре', 500, now() + 1, 1),
        ('Хинкали', 250, now(), 3);
 
 INSERT INTO VOTE(vote_date, vote_time, user_id, restaurant_id)
-VALUES (now(), '11:00', 1, 2),
+VALUES (now(), '11:00', 1, 1),
        (now(), '13:00', 2, 3);

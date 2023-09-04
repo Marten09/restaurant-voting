@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @UtilityClass
 public class DishUtil {
     public static DishTo createTo(Dish dish) {
-        return new DishTo(dish.getId(), dish.getDescription(), dish.getPrice(), dish.getRestaurant().getId());
+        return new DishTo(dish.getId(), dish.getDescription(), dish.getPrice());
     }
 
     public static Dish createNewFromTo(DishTo dishTo) {

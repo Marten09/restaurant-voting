@@ -32,7 +32,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
-        DishTo newDishTo = new DishTo(null, "новая еда", 233, RESTAURANT1_ID);
+        DishTo newDishTo = new DishTo(null, "новая еда", 233);
         Dish newDish = DishUtil.createNewFromTo(newDishTo);
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL_SLASH + RESTAURANT1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -50,7 +50,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void update() throws Exception {
         Dish oldDish = dishService.get(RESTAURANT1_ID, DISH1_ID);
-        DishTo updated = new DishTo(null, "updateDish", 300, RESTAURANT1_ID);
+        DishTo updated = new DishTo(null, "updateDish", 300);
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + RESTAURANT1_ID + "/dishes/" + DISH1_ID).contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());

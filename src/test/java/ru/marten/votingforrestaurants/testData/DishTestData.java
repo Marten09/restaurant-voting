@@ -2,7 +2,6 @@ package ru.marten.votingforrestaurants.testData;
 
 import ru.marten.votingforrestaurants.MatcherFactory;
 import ru.marten.votingforrestaurants.model.Dish;
-import ru.marten.votingforrestaurants.to.DishTo;
 
 import java.time.LocalDate;
 import java.util.List;
