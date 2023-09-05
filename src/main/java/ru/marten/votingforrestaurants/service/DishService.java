@@ -1,5 +1,6 @@
 package ru.marten.votingforrestaurants.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -12,12 +13,9 @@ import java.util.List;
 import static ru.marten.votingforrestaurants.util.validation.ValidationUtil.checkNotFoundWithId;
 
 @Service
+@AllArgsConstructor
 public class DishService {
     private final DishRepository dishRepository;
-
-    public DishService(DishRepository repository) {
-        this.dishRepository = repository;
-    }
 
     @CacheEvict(value = "dishes", allEntries = true)
     public Dish create(Dish dish) {
