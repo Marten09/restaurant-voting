@@ -18,12 +18,10 @@ import static ru.marten.votingforrestaurants.testData.VoteTestData.VOTE_MATCHER;
 import static ru.marten.votingforrestaurants.testData.VoteTestData.vote1;
 
 class AdminVoteRestControllerTest extends AbstractControllerTest {
-    private static final String REST_URL_SLASH = AdminVoteRestController.REST_URL + '/';
-
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getUserVote() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "/by-user/" + USER_ID))
+        perform(MockMvcRequestBuilders.get(AdminVoteRestController.REST_URL + "/by-user/" + USER_ID))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

@@ -53,7 +53,7 @@ class UserRestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getAllWithMenu() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "/with-menu"))
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "with-menu"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -63,7 +63,7 @@ class UserRestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getAllWithMenuByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "/with-menu" + "/by-date")
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "with-menu" + "/by-date")
                 .param("registeredDate", String.valueOf(LocalDate.now())))
                 .andExpect(status().isOk())
                 .andDo(print())

@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.marten.votingforrestaurants.testData.DishTestData.*;
 import static ru.marten.votingforrestaurants.testData.RestaurantTestData.RESTAURANT1_ID;
 import static ru.marten.votingforrestaurants.testData.UserTestData.ADMIN_MAIL;
-import static ru.marten.votingforrestaurants.web.dish.AdminDishRestController.REST_URL;
 
 class AdminDishRestControllerTest extends AbstractControllerTest {
     private static final String REST_URL_SLASH = AdminDishRestController.REST_URL + '/';
@@ -79,7 +78,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getNotAuthorized() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + DISH1_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + DISH1_ID))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
