@@ -13,7 +13,7 @@ import static ru.marten.votingforrestaurants.testData.RestaurantTestData.*;
 import static ru.marten.votingforrestaurants.testData.UserTestData.*;
 
 public class VoteTestData {
-    public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Vote.class, "restaurant.menuList", "user.registered", "user.password");
+    public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Vote.class, "restaurant", "user");
     public static final MatcherFactory.Matcher<VoteTo> VOTE_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(VoteTo.class, "voteTime");
 
     public static final int VOTE1_ID = 1;
