@@ -4,12 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.marten.votingforrestaurants.error.IllegalRequestDataException;
 import ru.marten.votingforrestaurants.model.Vote;
-import ru.marten.votingforrestaurants.testData.VoteTestData;
 import ru.marten.votingforrestaurants.to.VoteTo;
 import ru.marten.votingforrestaurants.util.VoteUtil;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.marten.votingforrestaurants.service.VoteService.DEADLINE;
+import static ru.marten.votingforrestaurants.testData.RestaurantTestData.RESTAURANT1_ID;
 import static ru.marten.votingforrestaurants.testData.UserTestData.USER_ID;
 import static ru.marten.votingforrestaurants.testData.VoteTestData.*;
 
@@ -25,7 +25,7 @@ class VoteServiceTest extends AbstractServiceTest {
 
     @Test
     void getUserVote() {
-        Vote actual = service.getUserVote(USER_ID);
+        Vote actual = service.getByUser(USER_ID);
         VOTE_MATCHER.assertMatch(actual, vote1);
     }
 
@@ -43,16 +43,11 @@ class VoteServiceTest extends AbstractServiceTest {
         Vote updated = getUpdated();
         if (updated.getVoteTime().isAfter(DEADLINE)) {
             assertThrows(IllegalRequestDataException.class, () -> {
-                service.update(updated);
+                service.update(updated, RESTAURANT1_ID);
             });
         } else {
-            service.update(updated);
+            service.update(updated, RESTAURANT1_ID);
             VOTE_MATCHER.assertMatch(service.get(VOTE1_ID), getUpdated());
         }
-    }
-
-    @Test
-    void getAll() {
-        VOTE_MATCHER.assertMatch(service.getAll(), VoteTestData.getAll());
     }
 }

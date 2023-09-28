@@ -1,7 +1,6 @@
 package ru.marten.votingforrestaurants.web.restaurant;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.marten.votingforrestaurants.model.Restaurant;
 import ru.marten.votingforrestaurants.service.RestaurantService;
@@ -10,11 +9,12 @@ import ru.marten.votingforrestaurants.to.RestaurantTo;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.slf4j.LoggerFactory.getLogger;
 import static ru.marten.votingforrestaurants.util.validation.ValidationUtil.assureIdConsistent;
 import static ru.marten.votingforrestaurants.util.validation.ValidationUtil.checkNew;
 
 public abstract class AbstractRestaurantController {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = getLogger(getClass());
 
     @Autowired
     private RestaurantService restaurantService;
@@ -36,14 +36,14 @@ public abstract class AbstractRestaurantController {
         restaurantService.delete(id);
     }
 
-    public Restaurant getWithMenu(int id) {
-        log.info("getWithMenu {}", id);
-        return restaurantService.getWithMenu(id);
+    public Restaurant getWithDishes(int id) {
+        log.info("getWithDishes {}", id);
+        return restaurantService.getWithDishes(id);
     }
 
-    public Restaurant getWithMenuByDate(int id, LocalDate registeredDate) {
-        log.info("getWithMenu {} {}", id, registeredDate);
-        return restaurantService.getWithMenuByDate(id, registeredDate);
+    public Restaurant getWithDishesByDate(int id, LocalDate menuDate) {
+        log.info("getWithDishesByDate {} {}", id, menuDate);
+        return restaurantService.getWithDishesByDate(id, menuDate);
     }
 
     public List<RestaurantTo> getAll() {
@@ -51,13 +51,13 @@ public abstract class AbstractRestaurantController {
         return restaurantService.getAll();
     }
 
-    public List<Restaurant> getAllWithMenu() {
-        log.info("getAllWithMenu");
-        return restaurantService.getAllWithMenu();
+    public List<Restaurant> getAllWithDishes() {
+        log.info("getAllWithDishes");
+        return restaurantService.getAllWithDishes();
     }
 
-    public List<Restaurant> getAllWithMenuByDate(LocalDate registeredDate) {
-        log.info("getAllWithMenuByDate");
-        return restaurantService.getAllWithMenuByDate(registeredDate);
+    public List<Restaurant> getAllWithDishesByDate(LocalDate menuDate) {
+        log.info("getAllWithDishesByDate");
+        return restaurantService.getAllWithDishesByDate(menuDate);
     }
 }

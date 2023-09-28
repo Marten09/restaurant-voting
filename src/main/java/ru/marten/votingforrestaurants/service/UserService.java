@@ -2,9 +2,9 @@ package ru.marten.votingforrestaurants.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import ru.marten.votingforrestaurants.error.NotFoundException;
 import ru.marten.votingforrestaurants.model.User;
 import ru.marten.votingforrestaurants.repository.UserRepository;
 
@@ -25,14 +25,13 @@ public class UserService {
 
     @CacheEvict(value = "users", allEntries = true)
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id) != 0 , id);
+        checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
     public User get(int id) {
-        return checkNotFoundWithId(repository.findById(id).orElse(null), id);
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("User with " + id + " not found"));
     }
 
-    @Cacheable("users")
     public List<User> getAll() {
         return repository.findAll();
     }

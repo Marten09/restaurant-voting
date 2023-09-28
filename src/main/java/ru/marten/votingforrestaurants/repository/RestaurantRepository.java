@@ -15,7 +15,6 @@ import java.util.Optional;
 @Repository
 @Transactional(readOnly = true)
 public interface RestaurantRepository extends BaseRepository<Restaurant> {
-
     @Transactional
     @Modifying
     @Query("DELETE FROM Restaurant r WHERE r.id=:id")
@@ -23,17 +22,15 @@ public interface RestaurantRepository extends BaseRepository<Restaurant> {
 
     @EntityGraph(attributePaths = {"menuList"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT r FROM Restaurant r WHERE r.id=?1")
-    Restaurant getWithMenu(int id);
+    Restaurant getWithDishes(int id);
 
-    @EntityGraph(attributePaths = {"menuList"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT r FROM Restaurant r JOIN FETCH r.menuList m WHERE m.registered=:registeredDate AND r.id=:id")
-    Optional<Restaurant> getWithMenuByDate(@Param("id") int id, @Param("registeredDate") LocalDate registeredDate);
+    @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menuList m WHERE m.menuDate=:menuDate AND r.id=:id")
+    Optional<Restaurant> getWithDishesByDate(@Param("id") int id, @Param("menuDate") LocalDate menuDate);
 
     @EntityGraph(attributePaths = {"menuList"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT r FROM Restaurant r ")
-    List<Restaurant> getAllWithMenu();
+    List<Restaurant> getAllWithDishes();
 
-    @EntityGraph(attributePaths = {"menuList"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT r FROM Restaurant r JOIN FETCH r.menuList m WHERE m.registered=:registeredDate")
-    List<Restaurant> getAllWithMenuByDate(@Param("registeredDate") LocalDate registeredDate);
+    @Query("SELECT r FROM Restaurant r JOIN FETCH r.menuList m WHERE m.menuDate=:menuDate")
+    List<Restaurant> getAllWithDishesByDate(@Param("menuDate") LocalDate menuDate);
 }

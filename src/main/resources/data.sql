@@ -15,7 +15,7 @@ VALUES ('Лисичка'),
        ('Нияма'),
        ('Онегин Дача');
 
-INSERT INTO DISH (description, price, registered, restaurant_id)
+INSERT INTO MENU_ITEM (description, price, menu_date, restaurant_id)
 VALUES ('Пюре', 500, now() + 1, 1),
        ('Шашлык', 1000, now() + 1, 1),
        ('Блины', 400, now() + 1, 1),
@@ -40,4 +40,5 @@ VALUES ('Пюре', 500, now() + 1, 1),
 
 INSERT INTO VOTE(vote_date, vote_time, user_id, restaurant_id)
 VALUES (now(), '11:00', 1, 1),
+       (DATEADD('DAY', -1, CURRENT_DATE), '12:00', 2, 1),
        (now(), '13:00', 2, 3);

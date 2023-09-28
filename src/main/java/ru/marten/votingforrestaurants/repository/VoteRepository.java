@@ -13,15 +13,9 @@ import java.util.Optional;
 @Repository
 @Transactional(readOnly = true)
 public interface VoteRepository extends BaseRepository<Vote> {
-    @Query("SELECT v FROM Vote v WHERE v.user.id=:userId")
-    Optional<Vote> getUserVote(@Param("userId") int userId);
-
-    @Query("SELECT v FROM Vote v WHERE  v.voteDate=:voteDate")
-    List<Vote> getAllByDate(@Param("voteDate") LocalDate voteDate);
-
     @Query("SELECT v FROM Vote v WHERE v.user.id=:userId AND v.voteDate=:voteDate")
     Optional<Vote> getByDate(@Param("userId") int userId, @Param("voteDate") LocalDate voteDate);
 
-    @Query("SELECT v.restaurant.id FROM Vote v WHERE v.voteDate=:voteDate GROUP BY v.restaurant.id ORDER BY COUNT(v.restaurant.id) DESC LIMIT 1")
-    Integer countVoteByDate(@Param("voteDate") LocalDate voteDate);
+    @Query("SELECT v FROM Vote v WHERE v.user.id=:userId")
+    List<Vote> getAllByUser(@Param("userId") int userId);
 }

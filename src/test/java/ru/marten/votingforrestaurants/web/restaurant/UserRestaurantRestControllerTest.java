@@ -24,8 +24,8 @@ class UserRestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     @Transactional
-    void getWithMenu() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + RESTAURANT1_ID + "/with-menu"))
+    void getWithDishes() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + RESTAURANT1_ID + "/with-dishes"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -33,9 +33,9 @@ class UserRestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     @Transactional
-    void getWithMenuByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + RESTAURANT1_ID + "/by-date")
-                .param("registeredDate", String.valueOf(LocalDate.now())))
+    void getWithDishesByDate() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + RESTAURANT1_ID + "/with-dishes/by-date")
+                .param("menuDate", String.valueOf(LocalDate.now())))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -44,27 +44,6 @@ class UserRestaurantRestControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = USER_MAIL)
     void getAll() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER.contentJson(RestaurantTestData.getAll()));
-    }
-
-    @Test
-    @WithUserDetails(value = USER_MAIL)
-    void getAllWithMenu() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "with-menu"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER.contentJson(RestaurantTestData.getAll()));
-    }
-
-    @Test
-    @WithUserDetails(value = USER_MAIL)
-    void getAllWithMenuByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "with-menu" + "/by-date")
-                .param("registeredDate", String.valueOf(LocalDate.now())))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

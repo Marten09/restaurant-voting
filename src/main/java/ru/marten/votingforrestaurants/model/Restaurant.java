@@ -25,7 +25,7 @@ public class Restaurant extends BaseEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     @Schema(hidden = true)
-    private List<Dish> menuList;
+    private List<MenuItem> menuList;
 
     public Restaurant(Restaurant restaurant) {
         this(restaurant.id, restaurant.name);

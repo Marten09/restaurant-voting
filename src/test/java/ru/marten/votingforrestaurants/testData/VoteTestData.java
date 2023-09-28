@@ -7,9 +7,9 @@ import ru.marten.votingforrestaurants.to.VoteTo;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
-import static ru.marten.votingforrestaurants.testData.RestaurantTestData.*;
+import static ru.marten.votingforrestaurants.testData.RestaurantTestData.restaurant1;
+import static ru.marten.votingforrestaurants.testData.RestaurantTestData.restaurant3;
 import static ru.marten.votingforrestaurants.testData.UserTestData.*;
 
 public class VoteTestData {
@@ -20,10 +20,7 @@ public class VoteTestData {
 
     public static final Vote vote1 = new Vote(VOTE1_ID, LocalDate.now(), LocalTime.of(11, 0), user, restaurant1);
     public static final Vote vote2 = new Vote(VOTE1_ID + 1, LocalDate.now(), LocalTime.of(13, 0), admin, restaurant3);
-
-    public static List<Vote> getAll() {
-        return List.of(vote1, vote2);
-    }
+    public static final Vote vote3 = new Vote(VOTE1_ID + 2, LocalDate.now().minusDays(1), LocalTime.of(12, 0), admin, restaurant1);
 
     public static Vote getNew() {
         return new Vote(null, LocalDate.now(), LocalTime.now(), newUser, restaurant3);

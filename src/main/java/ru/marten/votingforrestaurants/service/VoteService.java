@@ -2,7 +2,9 @@ package ru.marten.votingforrestaurants.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.marten.votingforrestaurants.error.IllegalRequestDataException;
+import ru.marten.votingforrestaurants.error.NotFoundException;
 import ru.marten.votingforrestaurants.model.Vote;
 import ru.marten.votingforrestaurants.repository.VoteRepository;
 import ru.marten.votingforrestaurants.to.VoteTo;
@@ -19,6 +21,7 @@ import static ru.marten.votingforrestaurants.util.validation.ValidationUtil.chec
 @AllArgsConstructor
 public class VoteService {
     private final VoteRepository voteRepository;
+    private final RestaurantService restaurantService;
 
     public static final String ALREADY_VOTED_EXCEPTION = "You have already voted today";
     public static final String CANNOT_BE_CHANGED_EXCEPTION = "The vote cannot be changed today";
@@ -26,13 +29,15 @@ public class VoteService {
     public static final LocalTime DEADLINE = LocalTime.of(11, 0);
 
     public Vote get(int id) {
-        return voteRepository.findById(id).orElse(null);
+        return voteRepository.findById(id).orElseThrow(() -> new NotFoundException("Vote with " + id + " not found"));
     }
 
-    public Vote getUserVote(int userId) {
-        return voteRepository.getUserVote(userId).orElseThrow();
+    public Vote getByUser(int userId) {
+        return voteRepository.getByDate(userId, LocalDate.now())
+                .orElseThrow(() -> new NotFoundException("The vote was not found, you have not done your vote yet"));
     }
 
+    @Transactional
     public VoteTo makeVote(Vote vote) {
         if (isVoteToday(vote.getUser().id())) {
             throw new IllegalRequestDataException(ALREADY_VOTED_EXCEPTION);
@@ -41,7 +46,9 @@ public class VoteService {
         return VoteUtil.createTo(newVote);
     }
 
-    public void update(Vote vote) {
+    @Transactional
+    public void update(Vote vote, int restId) {
+        vote.setRestaurant(restaurantService.getWithDishes(restId));
         vote.setVoteTime(LocalTime.now().truncatedTo(ChronoUnit.MINUTES));
         if (vote.getVoteTime().isAfter(DEADLINE)) {
             throw new IllegalRequestDataException(CANNOT_BE_CHANGED_EXCEPTION);
@@ -50,19 +57,11 @@ public class VoteService {
         VoteUtil.createTo(updated);
     }
 
-    public List<Vote> getAll() {
-        return voteRepository.findAll();
-    }
-
-    public List<Vote> getAllByDate(LocalDate voteDate) {
-        return voteRepository.getAllByDate(voteDate);
+    public List<Vote> getAllByUser(int userId) {
+        return voteRepository.getAllByUser(userId);
     }
 
     public boolean isVoteToday(int userId) {
         return voteRepository.getByDate(userId, LocalDate.now()).isPresent();
-    }
-
-    public Integer getWinnerRestaurantId(LocalDate localDate) {
-        return voteRepository.countVoteByDate(localDate);
     }
 }

@@ -38,13 +38,13 @@ public class RestaurantService {
     }
 
     @Cacheable(value = "restaurants")
-    public Restaurant getWithMenu(int id) {
-        return checkNotFoundWithId(repository.getWithMenu(id), id);
+    public Restaurant getWithDishes(int id) {
+        return checkNotFoundWithId(repository.getWithDishes(id), id);
     }
 
     @Cacheable(value = "restaurants")
-    public Restaurant getWithMenuByDate(int id, LocalDate registeredDate) {
-        return checkNotFoundWithId(repository.getWithMenuByDate(id, registeredDate), id).orElseThrow();
+    public Restaurant getWithDishesByDate(int id, LocalDate menuDate) {
+        return checkNotFoundWithId(repository.getWithDishesByDate(id, menuDate), id).orElseThrow();
     }
 
     @Cacheable(value = "restaurants")
@@ -52,13 +52,12 @@ public class RestaurantService {
         return RestaurantUtil.getTos(repository.findAll());
     }
 
-    @Cacheable(value = "restaurants")
-    public List<Restaurant> getAllWithMenu() {
-        return repository.getAllWithMenu();
+    public List<Restaurant> getAllWithDishes() {
+        return repository.getAllWithDishes();
     }
 
     @Cacheable(value = "restaurants")
-    public List<Restaurant> getAllWithMenuByDate(LocalDate registeredDate) {
-        return repository.getAllWithMenuByDate(registeredDate);
+    public List<Restaurant> getAllWithDishesByDate(LocalDate menuDate) {
+        return repository.getAllWithDishesByDate(menuDate);
     }
 }

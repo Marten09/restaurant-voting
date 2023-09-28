@@ -42,14 +42,14 @@ public class AdminRestaurantRestController extends AbstractRestaurantController 
         super.delete(id);
     }
 
-    @GetMapping("/{id}/with-menu")
-    public Restaurant getWithMenu(@PathVariable int id) {
-        return super.getWithMenu(id);
+    @GetMapping("/{id}/with-dishes")
+    public Restaurant getWithDishes(@PathVariable int id) {
+        return super.getWithDishes(id);
     }
 
-    @GetMapping("/{id}/by-date")
-    public Restaurant getWithMenuByDate(@PathVariable int id, @RequestParam LocalDate registeredDate) {
-        return super.getWithMenuByDate(id, registeredDate);
+    @GetMapping("/{id}/with-dishes/by-date")
+    public Restaurant getWithDishesByDate(@PathVariable int id, @RequestParam LocalDate menuDate) {
+        return super.getWithDishesByDate(id, menuDate);
     }
 
     @GetMapping
@@ -57,14 +57,13 @@ public class AdminRestaurantRestController extends AbstractRestaurantController 
         return super.getAll();
     }
 
-    @GetMapping("/with-menu")
-    public List<Restaurant> getAllWithMenu() {
-        return super.getAllWithMenu();
+    @GetMapping("/with-dishes")
+    public List<Restaurant> getAllWithDishes() {
+        return super.getAllWithDishes();
     }
 
-    @GetMapping("/with-menu/by-date")
-    public List<Restaurant> getAllWithMenuByDate(@RequestParam LocalDate registeredDate) {
-        log.info("getAllWithMenuByDate");
-        return super.getAllWithMenuByDate(registeredDate);
+    @GetMapping("/with-dishes/by-date")
+    public List<Restaurant> getAllWithDishesByDate(@RequestParam LocalDate menuDate) {
+        return super.getAllWithDishesByDate(menuDate);
     }
 }

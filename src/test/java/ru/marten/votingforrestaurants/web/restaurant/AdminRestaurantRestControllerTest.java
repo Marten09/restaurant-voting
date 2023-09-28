@@ -41,7 +41,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
         int newId = created.id();
         newRestaurant.setId(newId);
         RESTAURANT_MATCHER.assertMatch(created, newRestaurant);
-        RESTAURANT_MATCHER.assertMatch(service.getWithMenu(newId), newRestaurant);
+        RESTAURANT_MATCHER.assertMatch(service.getWithDishes(newId), newRestaurant);
     }
 
     @Test
@@ -52,14 +52,14 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
-        RESTAURANT_MATCHER.assertMatch(service.getWithMenu(RESTAURANT1_ID), updated);
+        RESTAURANT_MATCHER.assertMatch(service.getWithDishes(RESTAURANT1_ID), updated);
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     @Transactional
-    void getWithMenu() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + RESTAURANT1_ID + "/with-menu"))
+    void getWithDishes() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + RESTAURANT1_ID + "/with-dishes"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -67,9 +67,9 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     @Transactional
-    void getWithMenuByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + RESTAURANT1_ID + "/by-date")
-                .param("registeredDate", String.valueOf(LocalDate.now())))
+    void getWithDishesByDate() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + RESTAURANT1_ID + "/with-dishes/by-date")
+                .param("menuDate", String.valueOf(LocalDate.now())))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -86,8 +86,8 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
-    void getAllWithMenu() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "/with-menu"))
+    void getAllWithDishes() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "/with-dishes"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -96,9 +96,9 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
-    void getAllWithMenuByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "/with-menu" + "/by-date")
-                .param("registeredDate", String.valueOf(LocalDate.now())))
+    void getAllWithDishesByDate() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "/with-dishes" + "/by-date")
+                .param("menuDate", String.valueOf(LocalDate.now())))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

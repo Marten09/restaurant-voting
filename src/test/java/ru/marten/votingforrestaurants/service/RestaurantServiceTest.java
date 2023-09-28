@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static ru.marten.votingforrestaurants.testData.DishTestData.*;
+import static ru.marten.votingforrestaurants.testData.MenuItemTestData.*;
 import static ru.marten.votingforrestaurants.testData.RestaurantTestData.*;
 import static ru.marten.votingforrestaurants.testData.RestaurantTestData.NOT_FOUND;
 
@@ -27,20 +27,20 @@ class RestaurantServiceTest extends AbstractServiceTest {
         Restaurant newRestaurant = RestaurantTestData.getNew();
         newRestaurant.setId(newId);
         RESTAURANT_MATCHER.assertMatch(created, newRestaurant);
-        RESTAURANT_MATCHER.assertMatch(service.getWithMenu(newId), newRestaurant);
+        RESTAURANT_MATCHER.assertMatch(service.getWithDishes(newId), newRestaurant);
     }
 
     @Test
     void update() {
         Restaurant updated = RestaurantTestData.getUpdated();
         service.update(updated);
-        RESTAURANT_MATCHER.assertMatch(service.getWithMenu(RESTAURANT1_ID), RestaurantTestData.getUpdated());
+        RESTAURANT_MATCHER.assertMatch(service.getWithDishes(RESTAURANT1_ID), RestaurantTestData.getUpdated());
     }
 
     @Test
     void delete() {
         service.delete(RESTAURANT1_ID);
-        assertThrows(NotFoundException.class, () -> service.getWithMenu(RESTAURANT1_ID));
+        assertThrows(NotFoundException.class, () -> service.getWithDishes(RESTAURANT1_ID));
     }
 
     @Test
@@ -49,16 +49,16 @@ class RestaurantServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void getWithMenu() {
-        Restaurant actual = service.getWithMenu(RESTAURANT1_ID);
-        restaurant1.setMenuList(List.of(dish1, dish2, dish3, dish4, dish5, dish6, dish7, dish8, dish9));
+    void getWithDishes() {
+        Restaurant actual = service.getWithDishes(RESTAURANT1_ID);
+        restaurant1.setMenuList(List.of(MENU_ITEM_1, MENU_ITEM_2, MENU_ITEM_3, MENU_ITEM_4, MENU_ITEM_5, MENU_ITEM_6, MENU_ITEM_7, MENU_ITEM_8, MENU_ITEM_9));
         RESTAURANT_WITH_MENU_MATCHER.assertMatch(actual, restaurant1);
     }
 
     @Test
-    void getWithMenuByDate() {
-        Restaurant actual = service.getWithMenuByDate(RESTAURANT1_ID, LocalDate.now());
-        Restaurant expected = getRestaurantWithMenuByDate(restaurant1, LocalDate.now());
+    void getWithDishesByDate() {
+        Restaurant actual = service.getWithDishesByDate(RESTAURANT1_ID, LocalDate.now());
+        Restaurant expected = getRestaurantWithDishesByDate(restaurant1, LocalDate.now());
         RESTAURANT_WITH_MENU_MATCHER.assertMatch(actual, expected);
     }
 
